@@ -18,6 +18,8 @@ This pipeline was deployed fully on AWS using the following technologies
 
 Pipeline Architecture:
 
+![image] (https://github.com/jrowland22/sec-data-pipeline/blob/master/images/pipeline.png)
+
 ## Running
 Start mysql
 ```
