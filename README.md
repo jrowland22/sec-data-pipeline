@@ -17,6 +17,8 @@ This pipeline was deployed fully on AWS using the following technologies
 - Cassandra (Ec2)
 
 Pipeline Architecture:
+<br>
+<br>
 ![image](https://github.com/jrowland22/sec-data-pipeline/blob/master/images/pipeline.png)
 
 ## Running
