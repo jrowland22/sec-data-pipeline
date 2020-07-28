@@ -6,9 +6,8 @@ The U.S. Securities and Exchange Commission (SEC) is a government agency that ai
 The log file contains the following attributes: ‘ip,date,time,zone,cik,accession,extention,code,size,idx,norefer,noagent,find,crawler’ 
 The most important attributes for analysis of the log files being IP address, date, time, cik and accession. CIK stands for ‘Central Index Key’, it is a number assigned to a company to uniquely identify it. The issue with this is you would not know which company a user is researching without going to look up the CIK manually on the SEC website; therefore, more information about the company needs to be integrated. The accession number identifies a unique filing made by a company. But once again there is no information provided as to what company, form, or the date of the filing from the accession number alone. The data set also needs to be cleaned of bot requests so that analysis of the data only reflects human requests. A full description of attributes can be found [here](https://www.sec.gov/files/EDGAR_variables_FINAL.pdf)
 
-Sample record:<br>
-ip,date,time,zone,cik,accession,extention,code,size,idx,norefer,noagent,find,crawler <br>
-100.43.81.bbb,2016-01-01,00:00:00,0.0,857737.0,0001564590-15-010715,icon-20150930_cal.xml,200.0,5194.0,0.0,0.0,0.0,10.0,0.0
+Sample records:<br>
+![image](https://github.com/jrowland22/sec-data-pipeline/blob/master/images/sec-sample.png)
 ## Technology
 This pipeline was deployed fully on AWS using the following technologies
 - MySQL (RDS)
