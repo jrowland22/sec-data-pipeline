@@ -47,7 +47,7 @@ Run Hive processing script
 ./hive/hive_processing.q
 ```
 ### Configure and run Cassandra
-Run the following commands on each EC2
+Run the following commands on each EC2 instance
 <br>
 <br>
 Install java
@@ -66,7 +66,7 @@ Edit cassandra.yaml
 ```
 vim apache-cassandra-3.11.5/conf/cassandra.yaml
 ```
-Change the following fields
+Change the following fields inside cassandra.yaml
 ```
 seeds:”<node_2_private_ip>,<node_3_private_ip>”
 endpoint: Ec2Snitch
@@ -80,9 +80,8 @@ Start Cassandra
 ```
 ./cassandra
 ```
-Open a new terminal window and download hive tables from s3
+Open a new terminal window and download the two hive tables from s3
 ```
-wget https://<path_to_s3_file>
 wget https://<path_to_s3_file>
 ```
 Run the following to create the keyspace, tables and insert data into the tables
