@@ -9,7 +9,7 @@ The most important attributes for analysis of the log files being IP address, da
 Sample records:<br>
 ![image](https://github.com/jrowland22/sec-data-pipeline/blob/master/images/sec-sample.png)
 ## Technology
-This pipeline was deployed fully on AWS using the following technologies
+This pipeline was deployed fully on AWS using the following technologies:
 - MySQL 8.0.17 (RDS)
 - Sqoop 1.4.7 (EMR)
 - Hive 2.3.6 (EMR)
@@ -21,6 +21,7 @@ Pipeline Architecture:
 ![image](https://github.com/jrowland22/sec-data-pipeline/blob/master/images/pipeline.png)
 
 ## Running
+### Set up MySQL in RDS
 Start MySQL
 ```
 mysql -u root --password=password
@@ -29,22 +30,25 @@ Create tables
 ```
 source mysql/create_tables.sql
 ```
-Load data into mysql tables
+Load data into MySQL tables
 ```
 source mysql/load_data.sql
 ```
+### Configure and run Hive on EMR
 Create a three node EMR cluster on AWS
+<br>
 <br>
 Configure HDFS and run Sqoop
 ```
 ./hdfs/emr_setup.sh
 ```
-Run Hive script
+Run Hive processing script
 ```
 ./hive/hive_processing.q
 ```
-Configure Cassandra cluster with three EC2 instances
+### Configure and run Cassandra
 Run the following commands on each EC2
+<br>
 <br>
 Install java
 ```
@@ -71,6 +75,7 @@ listen_address: <current_node_private_ip>
 ```
 Repeat on each node and change the value of “seeds” to the other nodes that you are not currently on. Also change the values of “rpc_address” and “listen_address” to the current nodes IP.
 <br>
+<br>
 Start Cassandra
 ```
 ./cassandra
@@ -80,15 +85,15 @@ Open a new terminal window and download hive tables from s3
 wget https://<path_to_s3_file>
 wget https://<path_to_s3_file>
 ```
-Run the following to create key space, tables and insert data into tables
+Run the following to create the keyspace, tables and insert data into the tables
 ```
 ./Cassandra/cassandra_ddl.cql
 ```
-To enter and run queries
+Enter cqlsh
 ```
 cqlsh <node_private_ip>
 ```
-Enter the keyspace
+Enter the keyspace and proceed to run queries
 ```
 USE logs;
 ```
