@@ -12,6 +12,7 @@ Sample records:<br>
 This pipeline was deployed fully on AWS using the following technologies:
 - MySQL 8.0.17 (RDS)
 - Sqoop 1.4.7 (EMR)
+- Hadoop 2.8.5 (EMR)
 - Hive 2.3.6 (EMR)
 - Cassandra 3.11.5 (EC2)
 
