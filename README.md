@@ -89,11 +89,3 @@ Run the following to create the keyspace, tables and insert data into the tables
 ```
 ./Cassandra/cassandra_ddl.cql
 ```
-Enter cqlsh
-```
-cqlsh <node_private_ip>
-```
-Enter the keyspace and proceed to run queries
-```
-USE logs;
-```
