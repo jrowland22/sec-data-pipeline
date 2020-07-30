@@ -18,7 +18,7 @@ This pipeline was deployed fully on AWS using the following technologies:
 Pipeline Architecture:
 <br>
 <br>
-![image](https://github.com/jrowland22/sec-data-pipeline/blob/master/images/pipeline.png)
+![image](https://github.com/jrowland22/sec-data-pipeline/blob/master/images/sec_pipeline.png)
 
 ## Running
 ### Set up MySQL in RDS
