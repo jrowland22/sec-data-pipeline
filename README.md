@@ -79,11 +79,15 @@ Repeat on each node and change the value of “seeds” to the other nodes that 
 <br>
 Start Cassandra
 ```
-./cassandra
+/apache-cassandra-3.11.5/bin/cassandra
 ```
 Open a new terminal window and download the two hive tables from s3
 ```
 wget https://<path_to_s3_file>
+```
+Start cqlsh 
+```
+/apache-cassandra-3.11.5/bin/cqlsh
 ```
 Run the following to create the keyspace, tables and insert data into the tables
 ```
