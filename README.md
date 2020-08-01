@@ -87,5 +87,9 @@ wget https://<path_to_s3_file>
 ```
 Run the following to create the keyspace, tables and insert data into the tables
 ```
-./Cassandra/cassandra_ddl.cql
+source '/cassandra/create_tables.cql'
+```
+Run the query script to see the most requested forms, filings and companies
+```
+source '/cassandra/queries.cql'
 ```
