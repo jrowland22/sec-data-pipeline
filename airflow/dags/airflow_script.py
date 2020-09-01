@@ -1,4 +1,5 @@
 import airflow
+import config
 from datetime import timedelta
 from airflow import DAG
 from airflow.providers.amazon.aws.operators.emr_add_steps import EmrAddStepsOperator
@@ -6,10 +7,17 @@ from airflow.providers.amazon.aws.operators.emr_create_job_flow import EmrCreate
 from airflow.providers.amazon.aws.operators.emr_terminate_job_flow import EmrTerminateJobFlowOperator
 from airflow.providers.amazon.aws.sensors.emr_step import EmrStepSensor
 
+s3_log = config.s3_log_path
+emr_setup = config.emr_setup_sh_path
+ec2_key = config.ec2KeyName
+subnet_id = config.ec2SubnetId
+master_security_group = config.emrManagedMasterSecurityGroup
+slave_security_group = config.emrManagedSlaveSecurityGroup
+
 
 JOB_FLOW_OVERRIDES = {
     "Name": "batch-pipeline",
-    "LogUri": "s3://<log_path>",
+    "LogUri": s3_log,
     "ReleaseLabel": "emr-5.30.1",
     "Applications":[
     {"Name": "Hive"},
@@ -35,10 +43,10 @@ JOB_FLOW_OVERRIDES = {
         ],
         "KeepJobFlowAliveWhenNoSteps": False,
         "TerminationProtected": False,
-        "Ec2KeyName": "<>",
-        "Ec2SubnetId": "<>",
-        "EmrManagedMasterSecurityGroup": "<>",
-        "EmrManagedSlaveSecurityGroup": "<>"
+        "Ec2KeyName": ec2_key,
+        "Ec2SubnetId": subnet_id,
+        "EmrManagedMasterSecurityGroup": master_security_group,
+        "EmrManagedSlaveSecurityGroup": slave_security_group
     },
     "JobFlowRole": "EMR_EC2_DefaultRole",
     "ServiceRole": "EMR_DefaultRole"
@@ -57,7 +65,7 @@ step1 = [
   "ActionOnFailure": "CONTINUE",
   "HadoopJarStep": {
     "Jar": "command-runner.jar",
-    "Args": ["aws","s3","cp","s3://path/to/emr_setup.sh","/home/hadoop/"]
+    "Args": ["aws","s3","cp",emr_setup,"/home/hadoop/"]
   }
 }
 ]
