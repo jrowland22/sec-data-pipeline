@@ -9,7 +9,7 @@ from airflow.providers.amazon.aws.sensors.emr_step import EmrStepSensor
 
 JOB_FLOW_OVERRIDES = {
     "Name": "batch-pipeline",
-    "LogUri": "s3://aws-logs-222458958381-us-east-2/elasticmapreduce/",
+    "LogUri": "s3://<log_path>",
     "ReleaseLabel": "emr-5.30.1",
     "Applications":[
     {"Name": "Hive"},
@@ -35,10 +35,10 @@ JOB_FLOW_OVERRIDES = {
         ],
         "KeepJobFlowAliveWhenNoSteps": False,
         "TerminationProtected": False,
-        "Ec2KeyName": "mykeypair",
-        "Ec2SubnetId": "subnet-1018496a",
-        "EmrManagedMasterSecurityGroup": "sg-0d8e8293c45fb7349",
-        "EmrManagedSlaveSecurityGroup": "sg-001dff62f2254ef66"
+        "Ec2KeyName": "<>",
+        "Ec2SubnetId": "<>",
+        "EmrManagedMasterSecurityGroup": "<>",
+        "EmrManagedSlaveSecurityGroup": "<>"
     },
     "JobFlowRole": "EMR_EC2_DefaultRole",
     "ServiceRole": "EMR_DefaultRole"
@@ -57,7 +57,7 @@ step1 = [
   "ActionOnFailure": "CONTINUE",
   "HadoopJarStep": {
     "Jar": "command-runner.jar",
-    "Args": ["aws","s3","cp","s3://batch-pipeline/hdfs/emr_setup.sh","/home/hadoop/"]
+    "Args": ["aws","s3","cp","s3://path/to/emr_setup.sh","/home/hadoop/"]
   }
 }
 ]
