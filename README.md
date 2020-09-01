@@ -1,5 +1,4 @@
 # SEC Data Pipeline
-
 ## Introduction
 The U.S. Securities and Exchange Commission (SEC) is a government agency that aims to protect investors by ensuring that companies are truthful and transparent to their investors about their business activities. This is done by requiring public companies to file certain forms with the SEC on a regular basis. Once a company submits a form to the SEC, the SEC disperses the information to the public via their website. This allows investors to go to the SEC website and research a company’s current and past business activities. Recently the SEC made their web logs dating back to 2003 and as recent as 2017 available as csv files to the public. Each log file contains data about all user requests for a given day. This project creates a batch processing data pipeline that runs once every day processing the log file from the previous day. In the end, this pipeline will provide us with insights as to what companies, filings and forms users are interested in.
 ## Data Set
@@ -10,11 +9,12 @@ Sample records:<br>
 ![image](https://github.com/jrowland22/sec-data-pipeline/blob/master/images/sec-sample.png)
 ## Technology
 This pipeline was deployed fully on AWS using the following technologies:
+- Airflow 1.10.12 (EC2)
 - MySQL 8.0.17 (RDS)
 - Sqoop 1.4.7 (EMR)
 - Hadoop 2.8.5 (EMR)
 - Hive 2.3.6 (EMR)
-- Cassandra 3.11.5 (EC2)
+- Athena (Serverless)
 
 Pipeline Architecture:
 <br>
@@ -25,75 +25,40 @@ Pipeline Architecture:
 ### Set up MySQL in RDS
 Start MySQL
 ```
-mysql -u root --password=password
+mysql -h <rds_endpoint> -P 3306 -u <user> --local-infile -p
 ```
 Create tables
 ```
-source mysql/create_tables.sql
+source /sec-data-pipeline-master/mysql/create_tables.sql
 ```
 Load data into MySQL tables
 ```
-source mysql/load_data.sql
+source /sec-data-pipeline-master/mysql/load_data.sql
 ```
-### Configure and run Hive on EMR
-Create a three node EMR cluster on AWS
-<br>
-<br>
-Configure HDFS and run Sqoop
+### Configure
+Edit the following configuration files
 ```
-./hdfs/emr_setup.sh
+- /airflow/dags/config.py
+- /hdfs/emr.config
 ```
-Run Hive processing script
+### Files to upload to S3
 ```
-./hive/hive_processing.q
+- /hdfs/emr_setup.sh
+- /hive/hive_processing.q
 ```
-### Configure and run Cassandra
-Run the following commands on each EC2 instance
-<br>
-<br>
-Install java
+### Airflow
+Start airflow webserver
 ```
-sudo yum install java-1.8.0-openjdk
+airflow webserver
 ```
-Install cassandra
+Open UI and navigate to: Admin -> Connections -> aws_default <br>
+Edit the following properties
 ```
-wget https://www-us.apache.org/dist/cassandra/3.11.5/apache-cassandra-3.11.5-bin.tar.gz
+Login: aws_access_key
+Password: aws_secret_access_key
+Extra: {"region_name":"your-region"}
 ```
-Extract cassandra
+Start airflow and trigger DAG
 ```
-tar -zxf apache-cassandra-3.11.5-bin.tar.gz
-```
-Edit cassandra.yaml 
-```
-vim apache-cassandra-3.11.5/conf/cassandra.yaml
-```
-Change the following fields inside cassandra.yaml
-```
-seeds:”<node_2_private_ip>,<node_3_private_ip>”
-endpoint: Ec2Snitch
-rpc_address: <current_node_private_ip>
-listen_address: <current_node_private_ip>
-```
-Repeat on each node and change the value of “seeds” to the other nodes that you are not currently on. Also change the values of “rpc_address” and “listen_address” to the current nodes IP.
-<br>
-<br>
-Start Cassandra
-```
-/apache-cassandra-3.11.5/bin/cassandra
-```
-Open a new terminal window and download the two hive tables from s3
-```
-wget https://<path_to_s3_file>
-```
-Start cqlsh 
-```
-/apache-cassandra-3.11.5/bin/cqlsh
-```
-Run the following script to create the keyspace, tables and insert data into the tables
-```
-source '/cassandra/create_tables.cql'
-```
-Run the query script to see the most requested forms, filings and companies
-```
-source '/cassandra/queries.cql'
+bash /airflow/start-airflow.sh
 ```
