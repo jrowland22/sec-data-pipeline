@@ -86,14 +86,14 @@ CREATE TABLE base_table as
 
 
 -- stores filing_complete table temporarily in s3 bucket 
-INSERT OVERWRITE DIRECTORY 's3://hive-output5/filings/' 
+INSERT OVERWRITE DIRECTORY '${hiveconf:s3_output}'
 ROW FORMAT DELIMITED  
 FIELDS TERMINATED BY ',' 
 LINES TERMINATED BY '\n' 
 STORED AS TEXTFILE SELECT * FROM filing_complete;
 
 -- stores base_table temporarily in s3 before being loaded into cassandra
-INSERT OVERWRITE DIRECTORY 's3://hive-output5/logs/' 
+INSERT OVERWRITE DIRECTORY '${hiveconf:s3_output}' 
 ROW FORMAT DELIMITED  
 FIELDS TERMINATED BY ',' 
 LINES TERMINATED BY '\n' 
