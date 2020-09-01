@@ -24,4 +24,4 @@ hadoop fs -put log20160101.csv /user/hadoop/
 
 aws s3 cp $hive_file /home/hadoop/
 
-hive -f /home/hadoop/hive_processing.q
+hive -hiveconf s3_output=$hive_output -f /home/hadoop/hive_processing.q
