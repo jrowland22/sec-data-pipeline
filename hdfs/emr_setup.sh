@@ -21,3 +21,7 @@ wget http://www.sec.gov/dera/data/Public-EDGAR-log-file-data/2016/Qtr1/log201601
 unzip log20160101.zip
 
 hadoop fs -put log20160101.csv /user/hadoop/
+
+aws s3 cp $hive_file /home/hadoop/
+
+hive -f /home/hadoop/hive_processing.q
