@@ -7,9 +7,7 @@ import requests
 from bs4 import BeautifulSoup
 import csv
 import pandas as pd
-'''
-url = 'https://www.edgarcompany.sec.gov/servlet/CompanyDBSearch?page=detailed&cik=1000032&main_back=1'
-'''
+
 headers={'User-Agent':'Mozilla/5.0'}
 
 # cik is used to format the url request to return information for a specific company
